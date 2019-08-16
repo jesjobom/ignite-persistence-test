@@ -4,8 +4,6 @@ import java.util.List;
 
 public class Main {
 
-
-
     public static void main(String[] args) {
 
         System.out.println("\t===============> INITIALIZING IGNITE 1");
@@ -40,7 +38,7 @@ public class Main {
 
         await(1000);
 
-        System.out.println("\t===============> FECHANDO IGNITE 2");
+        System.out.println("\t===============> CLOSING IGNITE 2");
         ignitePersistence.close();
 
         await(1000);

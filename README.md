@@ -58,7 +58,7 @@ WARNING: Failed to resolve default logging config file: config/java.util.logging
 ...
 
 	===============> LISTING OBJECTS 2: 1
-	===============> FECHANDO IGNITE 2
+	===============> CLOSING IGNITE 2
 [17:52:53] Ignite node stopped OK [uptime=00:00:02.925]
 
 ```
