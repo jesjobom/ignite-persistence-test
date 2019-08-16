@@ -11,7 +11,7 @@ But using Docker (or Kubernetes) and a mounted volume for this storage, I always
 javax.cache.CacheException: class org.apache.ignite.IgniteCheckedException: Cannot find metadata for object with compact footer: 2097659979
 ```
 
-Without the `Set`, using persisting the `Model` individually, it also works.
+Without the `Set`, persisting the `Model` individually, it also works.
 
 #### 1. Clone Project
 `$ git clone https://github.com/jesjobom/ignite-persistence-test.git`
