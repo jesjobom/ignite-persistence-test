@@ -22,7 +22,7 @@ public class IgnitePersistence {
 
     private static final String STORAGE_LOCATION = "/tmp/ignite-test";
 
-    private static IgniteCache<String, Set<Model>> store;
+    private static IgniteCache<String, Model> store;
 
     private static Ignite ignite;
 
@@ -48,13 +48,13 @@ public class IgnitePersistence {
         ignite = Ignition.getOrStart(igniteConfiguration);
         ignite.cluster().active(true);
 
-        store = ignite.getOrCreateCache(new CacheConfiguration<String, Set<Model>>()
+        store = ignite.getOrCreateCache(new CacheConfiguration<String, Model>()
                 .setDataRegionName(PERSISTENT_REGION_NAME)
                 .setCacheMode(CacheMode.REPLICATED)
                 .setAtomicityMode(CacheAtomicityMode.TRANSACTIONAL)
                 .setWriteSynchronizationMode(CacheWriteSynchronizationMode.FULL_SYNC)
                 .setName("store")
-                .setIndexedTypes(String.class, Set.class)
+                .setIndexedTypes(String.class, Model.class)
         );
     }
 
@@ -63,40 +63,22 @@ public class IgnitePersistence {
     }
 
     void add(String key, String value) {
-        remove(key, value);
-
-        Set<Model> values;
-        if(store.containsKey(key)) {
-            values = store.get(key);
-        } else {
-            values = new HashSet<>();
-        }
-
-        values.add(new Model(value));
-        store.put(key, values);
+        store.put(key, new Model(value));
     }
 
     void remove(String key, String value) {
         if(store.containsKey(key)) {
-            Set<Model> values  = store.get(key);
-            List<Model> remove = values.stream()
-                    .filter(s -> value.equals(s.getValue()))
-                    .collect(Collectors.toList());
-
-            if(!remove.isEmpty()) {
-                values.removeAll(remove);
-                store.put(key, values);
-            }
+            store.remove(key);
         }
     }
 
     List<Model> list() {
         List<Model> values = new ArrayList<>();
-        Iterator<Cache.Entry<String, Set<Model>>> iterator = store.iterator();
+        Iterator<Cache.Entry<String, Model>> iterator = store.iterator();
 
         while(iterator.hasNext()) {
-            Cache.Entry<String, Set<Model>> entry = iterator.next();
-            values.addAll(entry.getValue());
+            Cache.Entry<String, Model> entry = iterator.next();
+            values.add(entry.getValue());
         }
 
         return values;
