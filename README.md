@@ -1,5 +1,17 @@
 # Ignite Persistence Test
-(... to show a bug...)
+
+##Solution
+In the end the solution was easy. I was missing the Work directory configuration (for the binary metada).
+It can be defined by the `IGNITE_HOME` variable or through the `igniteConfiguration.setWorkDirectory("persistent/path")`.
+
+Without it the binary metada was being lost with each container restart. 
+
+https://stackoverflow.com/questions/57529702/ignite-persisting-a-set-cannot-find-metadata-for-object-with-compact-footer/57537838
+
+Still it was misleading that everything would work if I was not using a `Set<Value>` as a the value for the persisted Map.
+Using a single `Value` in the map worked... 
+
+##The (solved) Problem
 
 I am trying to persist a `Set<Model>` for each `String` key.
 So I'd have a `IgniteCache<String, Set<Model>>`. 
